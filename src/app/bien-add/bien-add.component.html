@@ -1,0 +1,128 @@
+<!-- Modal list start -->
+<div class="modal fade bd-example-modal-lg" role="dialog" aria-modal="true" id="new-equipment-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header d-block text-center pb-3 border-bttom">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="exampleModalCenterTitle02">New Benefit</h3>
+       
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="alert alert-success" *ngIf="successMessage">
+                        {{ successMessage }}
+                    </div>
+                    <div class="alert alert-danger" *ngIf="errorMessage">
+                        {{ errorMessage }}
+                    </div>
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <label class="h5">Designation</label>
+                            <input
+                                type="text"
+                                formControlName="name"
+                                class="form-control"
+                                placeholder="Enter Designation"
+                                [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+                            />
+                            <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                                <div *ngIf="f['name'].errors['required']">Designation is required</div>
+                                <div *ngIf="f['name'].errors['minlength']">Designation must be at least 3 characters</div>
+                                <div *ngIf="f['name'].errors['maxlength']">Designation must not exceed 30 characters</div>
+                            </div>
+                        </div>
+
+        
+
+                        <div class="form-group col-md-6">
+                            <label class="h5">Requires Confirmation</label>
+                            <select formControlName="requiresConfirmation" class="custom-select" [ngClass]="{ 'is-invalid': submitted && f['requiresConfirmation'].errors }">
+                                <option value="">Select</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                            <div *ngIf="submitted && f['requiresConfirmation'].errors" class="invalid-feedback">Requires Confirmation is required</div>
+                        </div>
+              
+
+                        <div class="form-group col-md-12">
+                            <label class="h5">Description</label>
+                            <input
+                                type="text"
+                                formControlName="description"
+                                class="form-control"
+                                placeholder="Enter Description"
+                                [ngClass]="{ 'is-invalid': submitted && f['description'].errors }"
+                            />
+                            <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+                                <div *ngIf="f['description'].errors['required']">Description is required</div>
+                                <div *ngIf="f['description'].errors['minlength']">Description must be at least 3 characters</div>
+                                <div *ngIf="f['description'].errors['maxlength']">Description must not exceed 1000 characters</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label class="h5">For Department</label>
+                            <select formControlName="departementId" class="custom-select" [ngClass]="{ 'is-invalid': submitted && f['departementId'].errors }">
+                                <option value="">Select</option>
+                                <option *ngFor="let departement of departements" [value]="departement.id">{{ departement.name }}</option>
+                            </select>
+                            <div *ngIf="submitted && f['departementId'].errors" class="invalid-feedback">Department is required</div>
+                        </div>
+
+
+                        <div class="form-group col-md-4">
+                            <label class="h5">For Category</label>
+                            <select formControlName="categorieId" class="custom-select" [ngClass]="{ 'is-invalid': submitted && f['categorieId'].errors }" (change)="filterByCategory()">
+                                <option value="">Select</option>
+                                <option *ngFor="let categorie of categories" [value]="categorie.id">{{ categorie.name }}</option>
+                            </select>
+                            <div *ngIf="submitted && f['categorieId'].errors" class="invalid-feedback">Category is required</div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label class="h5">For SubCategory</label>
+                            <select formControlName="sousCategorieId" class="custom-select" [ngClass]="{ 'is-invalid': submitted && f['sousCategorieId'].errors }">
+                                <option value="">Select</option>
+                                <option *ngFor="let souscategorie of filteredSubCategories" [value]="souscategorie.id">{{ souscategorie.name }}</option>
+                            </select>
+                            <div *ngIf="submitted && f['sousCategorieId'].errors" class="invalid-feedback">SubCategory is required</div>
+                        </div>
+
+                      
+
+                        <div class="form-group col-md-12">
+                          <label for="exampleInputText01" class="h5">Attachments</label>
+                          <div class="custom-file">
+                              <input
+                                  type="file"
+                                  (change)="selectImage($event)"
+                                  formControlName="image"
+                                  class="custom-file-input"
+                                  id="inputGroupFile003"
+                                  aria-describedby="inputGroupFileAddon03"
+                                  [ngClass]="{ 'is-invalid': submitted && f['image'].errors }"
+                              />
+                              <label class="custom-file-label" for="inputGroupFile003">Upload media</label>
+                          </div>
+                          <div *ngIf="submitted && f['image'].errors" class="invalid-feedback">
+                              <div *ngIf="f['image'].errors['required']">Image is required</div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <button type="button" (click)="onReset()" class="btn btn-warning ml-2">Reset</button>
+                        <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

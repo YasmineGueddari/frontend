@@ -1,0 +1,183 @@
+<div class="wrapper">
+    <div class="content-page">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="text-center">New Reservation</h2>
+                            <br>
+                            <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="reservationStartDate">Start Date</label>
+                                        <input type="datetime-local" class="form-control" id="reservationStartDate" formControlName="reservationStartDate" (change)="onDateChange()">
+                                        <div *ngIf="reservationForm.controls['reservationStartDate'].invalid && reservationForm.controls['reservationStartDate'].touched" class="text-danger">
+                                            <div *ngIf="reservationForm.controls['reservationStartDate'].errors?.['required']">Start Date is required.</div>
+                                            <div *ngIf="reservationForm.controls['reservationStartDate'].errors?.['futureDate']">Start Date must be in the future.</div>
+                                            <div *ngIf="reservationForm.controls['reservationStartDate'].errors?.['holidayDate']">Start Date cannot be a holiday.</div>
+                                            <div *ngIf="reservationForm.controls['reservationStartDate'].errors?.['businessHours']">Start Date must be between 8 AM and 6 PM.</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="reservationEndDate">End Date</label>
+                                        <input type="datetime-local" class="form-control" id="reservationEndDate" formControlName="reservationEndDate" (change)="onDateChange()">
+                                        <div *ngIf="reservationForm.controls['reservationEndDate'].invalid && reservationForm.controls['reservationEndDate'].touched" class="text-danger">
+                                            <div *ngIf="reservationForm.controls['reservationEndDate'].errors?.['required']">End Date is required.</div>
+                                            <div *ngIf="reservationForm.controls['reservationEndDate'].errors?.['futureDate']">End Date must be in the future.</div>
+                                            <div *ngIf="reservationForm.controls['reservationEndDate'].errors?.['holidayDate']">End Date cannot be a holiday.</div>
+                                            <div *ngIf="reservationForm.controls['reservationEndDate'].errors?.['businessHours']">End Date must be between 8 AM and 6 PM.</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Error messages at the form group level -->
+                                <div *ngIf="reservationForm.errors && (reservationForm.controls['reservationStartDate'].touched || reservationForm.controls['reservationEndDate'].touched)" class="text-danger">
+                                    <div *ngIf="reservationForm.errors?.['sameStartEndTime']">Start Date and End Date cannot have the same time.</div>
+                                    <div *ngIf="reservationForm.errors?.['startBeforeEnd']">Start Date must be before End Date.</div>
+                                    <div *ngIf="reservationForm.errors?.['minimumOneHour']">Reservation must be at least one hour long.</div>
+                                </div>
+
+                                
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="departmentSelect">Department</label>
+                                        <select class="form-control" id="departmentSelect" (change)="filterByDepartment($event)">
+
+                                          <option value="all">Select </option>
+                                          <option *ngFor="let department of departments" [value]="department.id">{{ department.name }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="categorySelect">Category</label>
+                                        <select class="form-control" id="categorySelect" (change)="filterByCategory($event)">
+                                         
+                                            <option value="all">Select </option>
+                                            <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="Search">Search</label>
+                                        <div id="user_list_datatable_info" class="dataTables_filter">
+                                            <form class="mr-3 position-relative">
+                                                <div class="form-group mb-0">
+                                                    <input type="search" class="form-control" id="exampleInputSearch" placeholder="Enter name .."
+                                                    aria-controls="user-list-table" [(ngModel)]="searchTerm" name="search" (ngModelChange)="onSearch()">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="selectedCategory || selectedCategory === 'all'">
+                                        <label for="subcategorySelect">Subcategory</label>
+                                        <select class="form-control" id="subcategorySelect" (change)="filterBySubcategory($event)">
+                                        
+                                            <option value="all">Select</option>
+                                            <option *ngFor="let subcategory of filteredSouscategories" [value]="subcategory.id">{{ subcategory.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                  
+                                <div class="row mt-4">
+                                    <div class="col-md-12" *ngIf="filteredBiens.length > 0">
+                                        <h5 class="mb-3">Available Benefits</h5>
+                                        <table class="table table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Image</th>
+                                                    <th>Name</th>
+                                                    <th>Description</th>
+                                                    <th>Details</th>
+                                                    <th>Action</th>
+                                              
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let bien of filteredBiens" (click)="selectBienn(bien)" [class.table-active]="bien === selectedBien">
+                                                    <td>
+                                                        <img [src]="'http://localhost:3000/uploads/' + bien?.image" alt="{{ bien.name }}" class="img-thumbnail" style="width: 50px; height: 50px;">
+                                                    </td>
+                                                    <td>{{ bien.name }}</td>
+                                                    <td>{{ truncateText(bien.description, 50) }}</td>
+                                                    <td>
+                                                        <a type="button" class="btn btn-info btn-sm" (click)="selectBien(bien.id)" data-toggle="modal" data-target="#view-equipment-modal">View Details</a>
+                                                    </td>
+                                              
+                                                    <td>
+                                                        <button type="button" class="btn btn-success btn-sm" (click)="addToReservation(bien); $event.stopPropagation();">+</button>
+                                                    </td>
+                                                   
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                              <!-- Le modal "view-Equipment-modal" -->
+                                <div class="modal fade bd-example-modal-lg" role="dialog" aria-modal="true" id="view-equipment-modal">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-gradient-dark text-white">
+                                        <h5 class="modal-title text-white" id="view-Equipment-modalLabel">Benefit Details</h5>
+                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" >
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body" *ngIf="selectedBienId">
+                                        <app-bien-detail [bienId]="selectedBienId"></app-bien-detail>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+  
+
+                                <div *ngIf="reservationForm.valid && filteredBiens.length === 0 && reservationForm.controls['reservationStartDate'].touched && reservationForm.controls['reservationEndDate'].touched" class="alert alert-danger mt-4">
+                                    No equipment available for the selected date.
+                                </div>
+
+                                <div class="row mt-4" #selectedEquipmentTable *ngIf="reservationList.length > 0">
+                                    <div class="col-md-12">
+                                        <h5 class="mb-3">Selected Benefits for Reservation</h5>
+                                        <table class="table table-hover">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Image</th>
+                                                    <th>Name</th>
+                                                    <th>Description</th>
+                                                    <th>Details</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let bien of reservationList">
+                                                    <td>
+                                                        <img [src]="'http://localhost:3000/uploads/' + bien?.image" alt="{{ bien.name }}" class="img-thumbnail" style="width: 50px; height: 50px;">
+                                                    </td>
+                                                    <td>{{ bien.name }}</td>
+                                                    <td>{{ truncateText(bien.description, 50) }}</td>
+                                                    <td>
+                                                        <a type="button" class="btn btn-info btn-sm" (click)="selectBien(bien.id)" data-toggle="modal" data-target="#view-equipment-modal">View Details</a>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-sm" (click)="removeFromReservation(bien)">-</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="btn btn-primary mt-3" [disabled]="reservationList.length === 0" (click)="onSubmit()">Validate</button>
+                                        <button type="button" class="btn btn-secondary mt-3 ml-2" [disabled]="reservationList.length === 0" (click)="onCancel()">Cancel</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

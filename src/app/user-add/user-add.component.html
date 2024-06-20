@@ -1,0 +1,203 @@
+<div class="content-page">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between">
+              <div class="header-title">
+                <h4 class="card-title">Add New User</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div *ngIf="successMessage" class="alert alert-success">
+                  {{ successMessage }}
+                </div>
+                <div *ngIf="errorMessage" class="alert alert-danger">
+                  {{ errorMessage }}
+                </div>
+  
+                <div class="form-group">
+                    <div class="crm-profile-img-edit position-relative">
+                      <img class="crm-profile-pic rounded avatar-100"
+                           [src]="selectedImage || '../assets/images/user/1.jpg'"
+                           alt="profile-pic"
+                           (error)="setDefaultImage($event)">
+                      <div class="crm-p-image bg-primary">
+                        <i class="las la-pen upload-button">
+                          <input (change)="selectImage($event)" class="custom-file-input" type="file" formControlName="image">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+  
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>Role</label>
+                    <select formControlName="role" class="custom-select" [ngClass]="{ 'is-invalid': submitted && f['role'].errors }">
+                      <option value="">Select</option>
+                      <option value="User">User</option>
+                      <option value="Admin">Admin</option>
+                      <option value="SuperAdmin">SuperAdmin</option>
+                    </select>
+                    <div *ngIf="submitted && f['role'].errors" class="invalid-feedback">
+                      <div *ngIf="f['role'].errors['required']">User Role is required</div>
+                    </div>
+                  </div>
+
+  
+                  <div class="form-group col-md-6" *ngIf="f['role'].value === 'SuperAdmin'">
+                    <label>Branch</label>
+                    <ng-select [items]="branches"
+                               bindLabel="name"
+                               bindValue="id"
+                               formControlName="idSuccursales"
+                               [multiple]="true"
+                               placeholder=""
+                               [loading]="isLoadingBranches"
+                               [clearable]="true">
+                    </ng-select>
+                    <div *ngIf="submitted && f['idSuccursales'].errors" class="invalid-feedback d-block">
+                      <div *ngIf="f['idSuccursales'].errors['required']">Branch is required</div>
+                    </div>
+                  </div>
+                  
+  
+                  <div class="form-group col-md-6" *ngIf="f['role'].value === 'Admin' || f['role'].value === 'User'">
+                    <label>Branch</label>
+                    <select formControlName="idSuccursales" class="custom-select" [ngClass]="{ 'is-invalid': submitted && f['idSuccursales'].errors }">
+                      <option value="">Select</option>
+                      <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+                    </select>
+                    <div *ngIf="submitted && f['idSuccursales'].errors" class="invalid-feedback">
+                      <div *ngIf="f['idSuccursales'].errors['required']">Branch is required</div>
+                    </div>
+                  </div>
+                </div>
+  
+                <hr>
+                <h5 class="mb-3">New User Information</h5>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>First Name</label>
+                    <input
+                      type="text"
+                      formControlName="firstName"
+                      class="form-control"
+                      placeholder="Enter First Name"
+                      [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
+                    />
+                    <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+                      <div *ngIf="f['firstName'].errors['required']">First Name is required</div>
+                      <div *ngIf="f['firstName'].errors['minlength']">First Name must be at least 2 characters</div>
+                      <div *ngIf="f['firstName'].errors['maxlength']">First Name must not exceed 30 characters</div>
+                    </div>
+                  </div>
+  
+                  <div class="form-group col-md-6">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      formControlName="lastName"
+                      class="form-control"
+                      placeholder="Enter Last Name"
+                      [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
+                    />
+                    <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+                      <div *ngIf="f['lastName'].errors['required']">Last Name is required</div>
+                      <div *ngIf="f['lastName'].errors['minlength']">Last Name must be at least 3 characters</div>
+                      <div *ngIf="f['lastName'].errors['maxlength']">Last Name must not exceed 30 characters</div>
+                    </div>
+                  </div>
+  
+                  <div class="form-group col-md-6">
+                    <label>Email</label>
+                    <input
+                      type="text"
+                      formControlName="email"
+                      class="form-control"
+                      placeholder="Enter example@gmail.com"
+                      [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+                    />
+                    <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                      <div *ngIf="f['email'].errors['required']">Email is required</div>
+                      <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+                    </div>
+                  </div>
+  
+                  <div class="form-group col-md-6">
+                    <label>Phone</label>
+                    <input
+                      type="number"
+                      formControlName="phone"
+                      class="form-control"
+                      placeholder="Enter Phone +216"
+                      [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+                    />
+                    <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
+                      <div *ngIf="f['phone'].errors['required']">Phone is required</div>
+                      <div *ngIf="f['phone'].errors['pattern']">Phone must be a valid number (8 digits)</div>
+                    </div>
+                  </div>
+                </div>
+  
+                <hr>
+                <h5 class="mb-3">Security</h5>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>Password</label>
+                    <input
+                      type="password"
+                      formControlName="password"
+                      class="form-control"
+                      placeholder="Enter Password"
+                      [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+                    />
+                    <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                      <div *ngIf="f['password'].errors['required']">Password is required</div>
+                      <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</div>
+                      <div *ngIf="f['password'].errors['maxlength']">Password must not exceed 40 characters</div>
+                    </div>
+                  </div>
+  
+                  <div class="form-group col-md-6">
+                    <label>Confirm Password</label>
+                    <input
+                      type="password"
+                      formControlName="confirmPassword"
+                      class="form-control"
+                      placeholder="Enter Confirm Password"
+                      [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+                    />
+                    <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+                      <div *ngIf="f['confirmPassword'].errors['required']">Confirm Password is required</div>
+                      <div *ngIf="f['confirmPassword'].errors['matching']">Confirm Password does not match</div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="form-group form-check">
+                  <input
+                    type="checkbox"
+                    formControlName="acceptTerms"
+                    class="form-check-input"
+                    [ngClass]="{ 'is-invalid': submitted && f['acceptTerms'].errors }"
+                  />
+                  <label for="acceptTerms" class="form-check-label">I have read and agree to the Terms</label>
+                  <div *ngIf="submitted && f['acceptTerms'].errors" class="invalid-feedback">
+                    Accept Terms is required
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary">Register</button>
+                  <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

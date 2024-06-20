@@ -1,0 +1,66 @@
+<div class="content-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="header-title">
+                            <h4 class="card-title">Your Departments</h4>
+                        </div>
+                        <div class="iq-search-bar device-search" style="margin-left: 450px;">
+                            <form action="#" class="searchbox">
+                                <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                                <input type="text" class="text search-input" placeholder="Search here..." [(ngModel)]="searchTerm" name="search" (ngModelChange)="onSearch()">
+                            </form>
+                        </div>
+                        <div class="pl-3 border-left btn-new">
+                            <a href="#" class="btn btn-primary" data-target="#new-department-modal" data-toggle="modal">New Department</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                          <table id="user-list-table" class="table table-striped table-bordered mt-4" role="grid" aria-describedby="user-list-page-info">
+                            <thead>
+                              <tr class="bg-light">
+                                        <th>Designation</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let department of filteredDepartments">
+                                        <td [ngClass]="{ 'inactive': !department.isActive }">{{ department.name }}</td>
+                                        <td *ngIf="department.isActive" [ngClass]="{ 'inactive': !department.isActive }">
+                                            <span class="badge bg-warning-light">Active</span>
+                                        </td>
+                                        <td *ngIf="!department.isActive" [ngClass]="{ 'inactive': !department.isActive }">
+                                            <span class="badge bg-danger-light">Inactive</span>
+                                        </td>
+                                        <td>
+                                            <div class="flex align-items-center list-user-action">
+                                                <a *ngIf="department.isActive" class="bg-primary-light rounded-circle iq-card-icon-small" data-target="#update-department-modal" data-toggle="modal" (click)="selectDepartment(department.id)" title="Edit">
+                                                    <i class="las la-pen"></i>
+                                                </a>
+                                                <a *ngIf="selectedDepartmentId === department.id">
+                                                    <app-department-update [departmentId]="selectedDepartmentId"></app-department-update>
+                                                </a>
+                                                <a *ngIf="department.isActive" class="bg-secondary-light rounded-circle iq-card-icon-small" (click)="confirmDelete(department.id)" title="Delete">
+                                                    <i class="las la-trash-alt"></i>
+                                                </a>
+                                                <a *ngIf="!department.isActive" class="bg-success-light rounded-circle iq-card-icon-small" (click)="reactivateDepartment(department.id)" title="Reactivate">
+                                                    <i class="las la-check-circle"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-department-add></app-department-add>

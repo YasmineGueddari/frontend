@@ -1,0 +1,99 @@
+<div class="content-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">Your Waiting List</h4>
+          </div>
+          <div class="card-body">
+            <h5>Reservations</h5>
+            <div class="table-responsive">
+              <table id="user-list-table" class="table table-striped table-bordered mt-4" role="grid" aria-describedby="user-list-page-info">
+                <thead>
+                  <tr class="bg-light">
+                    <th>Picture</th>
+                    <th>Equipment</th>
+                    <th style="min-width: 200px">Start Date</th>
+                    <th style="min-width: 200px">End Date</th>
+                    <th style="min-width: 150px">For User</th>
+                    <th>Created At</th>
+                    <th style="min-width: 150px">State</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let reservation of filteredReservations ">
+                    <td>
+                      <div class="media align-items-center">
+                        <img class="rounded img-fluid avatar-40" [src]="reservation.bien ? 'http://localhost:3000/uploads/' + reservation.bien.image : 'placeholder.jpg'" alt="profile">
+                      </div>
+                    </td>
+                    <td>{{ reservation.bien?.name || 'N/A' }}</td>
+                    <td>{{ reservation.date_debut | date: 'medium' }}</td>
+                    <td>{{ reservation.date_fin | date: 'medium' }}</td>
+                    <td>{{ reservation.user?.firstName || 'N/A' }} {{ reservation.user?.lastName || 'N/A' }}</td>
+                    <td>{{ reservation.createdAt | date: 'short' }}</td>
+                    <td>
+                      <button *ngIf="reservation.statut === 'confirmed'" class="btn btn-success btn-sm">Reserved</button>
+                      <button *ngIf="reservation.statut === 'pending'" class="btn btn-secondary btn-sm" data-target="#update-reservation-modal" data-toggle="modal" (click)="selectReservation(reservation.id)" title="Edit">
+                        <i class="las la-pen mr-0"></i> On Hold
+                      </button>
+                      <a *ngIf="selectedReservationId === reservation.id">
+                        <app-reservation-update [reservationId]="selectedReservationId"></app-reservation-update>
+                      </a>
+                      <button *ngIf="reservation.statut === 'cancelled'" class="btn btn-danger btn-sm">Cancelled</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        
+          </div>
+          <div class="card-body">
+            <h5>Claims</h5>
+            <div class="table-responsive">
+              <table id="user-list-table" class="table table-striped table-bordered mt-4" role="grid" aria-describedby="user-list-page-info">
+                <thead>
+                  <tr class="bg-light">
+                    <th>Describe the problem</th>
+                    <th>Picture</th>
+                    <th>Benefit</th>
+                    <th style="min-width: 150px">For reservation</th>
+                    <th style="min-width: 150px">For User</th>
+                    <th>Created At</th>
+                    <th style="min-width: 130px">State</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let reclamation of filteredReclamations ">
+                    <td>{{ reclamation.description }}</td>
+                    <td>
+                      <div class="media align-items-center">
+                        <img class="rounded img-fluid avatar-40" [src]="reclamation.bien ? 'http://localhost:3000/uploads/' + reclamation.bien.image : 'placeholder.jpg'" alt="profile">
+                      </div>
+                    </td>
+                    <td>{{ reclamation.bien.name }}</td>
+                    <td>{{ reclamation.reservation.id }}</td>
+                    <td>{{ reclamation.user?.firstName || 'N/A' }} {{ reclamation.user?.lastName || 'N/A' }}</td>
+                    <td>{{ reclamation.createdAt | date: 'short' }}</td>
+                    <td>
+                      <button *ngIf="reclamation.statut === 'confirmed'" class="btn btn-success btn-sm">Accepted</button>
+                      <button *ngIf="reclamation.statut === 'pending'" class="btn btn-secondary btn-sm" data-target="#update-reclamation-modal" data-toggle="modal" (click)="selectReclamation(reclamation.id)" title="Edit">
+                        <i class="las la-pen mr-0"></i> On Hold
+                      </button>
+                      <a *ngIf="selectedReclamationId === reclamation.id">
+                        <app-reclamation-update [reclamationId]="selectedReclamationId"></app-reclamation-update>
+                      </a>
+                      <button *ngIf="reclamation.statut === 'cancelled'" class="btn btn-danger btn-sm">Cancelled</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

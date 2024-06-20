@@ -1,0 +1,128 @@
+ <!-- Modal list start -->
+<div class="modal fade bd-example-modal-lg" role="dialog" aria-modal="true" id="new-branch-modal" >
+    <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header d-block text-center pb-3 border-bttom">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          <h3 class="modal-title" id="exampleModalCenterTitle02">New Branch</h3>
+ 
+      </div>
+
+        <div class="modal-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="row">
+                
+                            <div class="form-group col-md-6">
+                            <label class="h5">Designation</label>
+                            <input
+                              type="text"
+                              formControlName="name"
+                              class="form-control"
+                              placeholder="Enter Name"
+                              [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+                            />
+                            <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                              <div *ngIf="f['name'].errors['required']">Designation is required</div>
+                              <div *ngIf="f['name'].errors['minlength']">
+                                Designation must be at least 3 characters
+                              </div>
+                              <div *ngIf="f['name'].errors['maxlength']">
+                                Designation must not exceed 30 characters
+                              </div>
+                            </div>
+                          </div>
+                    
+
+
+                          <div class="form-group col-md-6">
+                            <label class="h5" >Matricule Fiscal</label>
+                            <input
+                              type="text"
+                              formControlName="matriculeFiscal"
+                              class="form-control"
+                              placeholder="Matricule Fiscal"
+                              [ngClass]="{ 'is-invalid': submitted && f['matriculeFiscal'].errors }"
+                            />
+                            <div *ngIf="submitted && f['matriculeFiscal'].errors" class="invalid-feedback">
+                              <div *ngIf="f['matriculeFiscal'].errors['required']"> Matricule Fiscal is required</div>
+                              <div *ngIf="f['matriculeFiscal'].errors['minlength']">
+                                   Matricule Fiscal must be at least 3 characters
+                              </div>
+                              <div *ngIf="f['matriculeFiscal'].errors['maxlength']">
+                                   Matricule Fiscal must not exceed 30 characters
+                              </div>
+                            </div>
+                          </div>
+
+
+                        <div class="form-group col-md-6">
+                                <label class="h5" >Email</label>
+                                <input
+                                    type="text"
+                                    formControlName="email"
+                                    class="form-control"
+                                    placeholder="Enter example@gmail.com"
+                                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+                                />
+                                <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['email'].errors['required']">Email is required</div>
+                                    <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+                                </div>
+                                </div>
+
+
+                        <div class="form-group col-md-6">
+                                    <label class="h5" >Phone </label>
+                                    <input
+                                    type="number"
+                                    formControlName="phone"
+                                    class="form-control"
+                                    placeholder="Enter Phone +216"
+                                    [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+                                    />
+                                    <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['phone'].errors['required']">Phone is required</div>
+                                    <div *ngIf="f['phone'].errors['pattern']">Phone must number (8 digits)</div>
+                                    </div>
+                                </div>
+                       
+
+
+                                <div class="form-group col-md-12">
+                                    <label class="h5">Address</label>
+                                    <input
+                                      type="text"
+                                      formControlName="address"
+                                      class="form-control"
+                                      placeholder="Enter Address"
+                                      [ngClass]="{ 'is-invalid': submitted && f['address'].errors }"
+                                    />
+                                    <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+                                      <div *ngIf="f['address'].errors['required']">Address is required</div>
+                                      <div *ngIf="f['address'].errors['minlength']">
+                                        Address must be at least 3 characters
+                                      </div>
+                                      <div *ngIf="f['address'].errors['maxlength']">
+                                        Address must not exceed 30 characters
+                                      </div>
+                                    </div>
+                                  </div>
+        
+                
+
+                                  <div class="form-group col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Register</button>
+                                    <button type="button" (click)="onReset()" class="btn btn-warning ml-2">Reset</button>
+                                    <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Close</button>
+                                </div>
+               
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>    
+ 

@@ -1,0 +1,40 @@
+<!-- Modal list start -->
+<div class="modal fade bd-example-modal-lg" role="dialog" aria-modal="true" id="update-reservation-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header d-block text-center pb-3 border-bttom">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="exampleModalCenterTitle02">Edit Reservation State</h3>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                    <div class="form-group">
+                      <label for="reservationState" class="h5">State</label>
+                      <select id="reservationState" formControlName="statut" class="form-control">
+                        <option value="">Select state</option>
+                        <option value="confirmed">Reserved</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                      <div *ngIf="submitted && f['statut'].errors" class="invalid-feedback">
+                        <div *ngIf="f['statut'].errors['required']">State is required</div>
+                    </div>
+                    </div>
+                    <br>
+                  
+                   
+                    <div class="form-group col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" (click)="onReset()" class="btn btn-warning ml-2">Reset</button>
+                        <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Back</button>
+                    </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

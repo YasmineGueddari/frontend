@@ -1,0 +1,56 @@
+.has-error .form-control {
+    border-color: red;
+}
+
+/* Assurez-vous que l'élément ng-select prend toute la largeur disponible */
+::ng-deep ng-select {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  /* Ajuster la hauteur minimale du conteneur ng-select */
+  ::ng-deep .ng-select .ng-select-container {
+    min-height: 40px;
+  }
+  
+  /* Assurer que les éléments sélectionnés sont correctement alignés et espacement */
+  ::ng-deep .ng-select .ng-select-container .ng-value-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  /* Style pour les éléments sélectionnés */
+  ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-value {
+    margin: 2px;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Style pour le texte des éléments sélectionnés */
+  ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-value-label {
+    font-size: 0.875rem;
+    margin-right: 5px;
+  }
+  
+  /* Style pour l'icône de suppression des éléments sélectionnés */
+  ::ng-deep .ng-select .ng-select-container .ng-value-container .ng-value .ng-value-icon {
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  
+  /* Assurer que le bouton de suppression a une bonne apparence */
+  ::ng-deep .ng-select .ng-select-container .ng-clear-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Changer la couleur du bouton de suppression au survol */
+  ::ng-deep .ng-select .ng-select-container .ng-clear-wrapper .ng-clear:hover {
+    color: #dc3545;
+  }
+  
+  

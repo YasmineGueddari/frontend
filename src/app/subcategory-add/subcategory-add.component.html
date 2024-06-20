@@ -1,0 +1,68 @@
+<p>subcategory-add works!</p>
+<!-- Modal list start -->
+<div class="modal fade bd-example-modal-lg" role="dialog" aria-modal="true" id="new-subcategory-modal" >
+    <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header d-block text-center pb-3 border-bttom">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          <h3 class="modal-title" id="exampleModalCenterTitle02">New Subcategory</h3>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="row">
+
+            
+                
+                            <div class="form-group col-md-6">
+                            <label class="h5">Designation</label>
+                            <input
+                              type="text"
+                              formControlName="name"
+                              class="form-control"
+                              placeholder="Enter your designation"
+                              [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+                            />
+                            <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                              <div *ngIf="f['name'].errors['required']">Designation is required</div>
+                              <div *ngIf="f['name'].errors['minlength']">
+                                Designation be at least 2 characters
+                              </div>
+                              <div *ngIf="f['name'].errors['maxlength']">
+                                Designation must not exceed 30 characters
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                            <label>For Category</label>
+                            <select formControlName="categorieId" class="custom-select" [ngClass]="{ 'is-invalid': submitted && f['categorieId'].errors }">
+                                <option value="">Select</option> <!-- Option par défaut -->
+                                <!-- Boucle sur les catégories pour afficher chaque catégorie comme une option -->
+                                <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                            </select>
+                            <!-- Afficher un message d'erreur si la sélection de catégorie est invalide -->
+                            <div *ngIf="submitted && f['categorieId'].errors" class="invalid-feedback">
+                                Category is required
+                            </div>
+                        </div>
+                        
+        
+                
+
+                                  <div class="form-group col-md-12 text-center">
+                                    <button type="submit" class="btn btn-primary">Edit </button>
+                                    <button type="button" (click)="onReset()" class="btn btn-warning ml-2">Reset</button>
+                                    <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Close</button>
+                                </div>
+               
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>    
+ 

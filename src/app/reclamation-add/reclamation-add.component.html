@@ -1,0 +1,48 @@
+<!-- Modal list start -->
+<div class="modal fade bd-example-modal-lg" role="dialog" aria-modal="true" id="add-reclamation-modal" #modal>
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-block text-center pb-3 border-bottom">
+                <button type="button" class="close" aria-label="Close" (click)="closeModal(modal)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="exampleModalCenterTitle02">New Reclamation</h3>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit(modal)">
+
+                    <!-- Success and Error Messages -->
+                    <div *ngIf="successMessage" class="alert alert-success text-center">
+                        {{ successMessage }}
+                    </div>
+                    <div *ngIf="errorMessage" class="alert alert-danger text-center">
+                        {{ errorMessage }}
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label class="h5">Description</label>
+                        <input
+                            type="text"
+                            formControlName="description"
+                            class="form-control"
+                            placeholder="Enter Description"
+                            [ngClass]="{ 'is-invalid': submitted && f['description'].errors }"
+                        />
+                        <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+                            <div *ngIf="f['description'].errors['required']">Description is required</div>
+                            <div *ngIf="f['description'].errors['minlength']">Description must be at least 3 characters</div>
+                            <div *ngIf="f['description'].errors['maxlength']">Description must not exceed 1000 characters</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" (click)="onReset()" class="btn btn-warning ml-2">Reset</button>
+                        <button type="button" class="btn btn-secondary ml-2" (click)="closeModal(modal)">Back</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

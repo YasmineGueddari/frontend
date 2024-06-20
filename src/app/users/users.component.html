@@ -1,0 +1,165 @@
+<div class="content-page">
+    <div class="container-fluid">
+
+       <div class="row">
+           <div class="col-lg-12">
+               <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between breadcrumb-content">
+                        <h5>Your Users</h5>
+                        <div class="d-flex align-items-center" >
+                            
+                            <div class="list-grid-toggle d-flex align-items-center mr-3" >
+
+                                <div >
+                                    <div class="iq-search-bar device-search" >
+                                        <form action="#" class="searchbox">
+                                            <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                                            <input type="text" class="text search-input" placeholder="Search here..." [(ngModel)]="searchTerm" name="search" (ngModelChange)="onSearch()">
+                                        </form>
+                                    </div>
+                                </div>
+                            
+                
+                                <div class="nav-item nav-icon search-content">
+                                    <a href="#" class="search-toggle rounded" id="dropdownSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="ri-search-line"></i>
+                                    </a>
+                                    <div class="iq-search-bar iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownSearch">
+                                        <form action="#" class="searchbox p-2">
+                                            <div class="form-group mb-0 position-relative">
+                                                <input type="text" class="text search-input font-size-12" placeholder="Type here to search..." [(ngModel)]="searchTerm"  name="search"  (ngModelChange)="onSearch()">
+                                                <a href="#" class="search-link"><i class="las la-search"></i></a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                     
+
+
+
+
+                      
+                           
+                                   <div data-toggle-extra="tab" data-target-extra="#grid" class="active" style="margin-left: 20px;">
+                                       <div class="grid-icon mr-3">
+                                           <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                               <rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
+                                           </svg>
+                                       </div>
+                                   </div>
+
+                                   <div data-toggle-extra="tab" data-target-extra="#list">
+                                       <div class="grid-icon">
+                                           <svg  width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                               <line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line>
+                                           </svg> 
+                                       </div>
+                                   </div>
+                </div> 
+
+                               <div class="pl-3 border-left btn-new">
+                                <a routerLink="/user-add" class="btn btn-primary">New User</a>
+                               </div>         
+                               
+                               
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+       
+       
+       <div id="grid" class="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
+        <div class="row">
+          <div class="col-lg-4 col-md-6" *ngFor="let user of filteredUsers">
+            <div class="card-transparent card-block card-stretch card-height">
+              <div class="card-body text-center p-0">
+                <div class="item">
+                  <div class="odr-img" >
+                    <!-- Utilisez l'URL correcte pour récupérer l'image -->
+                    <img [src]="'http://localhost:3000/uploads/' + user.image"
+                         class="img-fluid rounded-circle avatar-90 m-auto"
+                         alt="image"
+                         (error)="setDefaultImage($event)">
+                  </div>
+                  <div class="odr-content rounded">
+                    <h4 class="mb-2">{{ user.firstName }} {{ user.lastName }}</h4>
+                    <p class="mb-3" >{{ user.email }}</p>
+                 
+
+                    <!--<u-- class="list-unstyled mb-2">
+                      <li class="bg-primary-light rounded-circle iq-card-icon-small mr-4" *ngIf="user.isActive" 
+                       
+                          [routerLink]="['/user-update', user.id]">
+                        <i class="las la-pen mr-0"></i>
+                      </li>
+                      <li class="bg-secondary-light rounded-circle iq-card-icon-small mr-4" *ngIf="user.isActive" 
+                     
+                         
+                          (click)="confirmDelete(user.id)">
+                        <i class="las la-trash-alt mr-0"></i>
+                      </li>
+                      <li [ngClass]="{ 'bg-warning-light': !user.isActive, 'rounded-circle': !user.isActive, 'iq-card-icon-small': !user.isActive, 'mr-4': !user.isActive }" *ngIf="!user.isActive" (click)="reactivateUser(user.id)"><i class="las la-check-circle mr-0"></i></li>
+                    </u-->
+
+                    <div class="pt-3 border-top">
+                      <a href="mailto:{{ user.email }}"  class="btn btn-primary">Message</a>
+                  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    
+    
+      
+      
+      
+      
+      <div id="list" class="item-content animate__animated animate__fadeIn" data-toggle-extra="tab-content">
+        <div class="table-responsive rounded bg-white mb-4">
+          <table class="table mb-0 table-borderless tbl-server-info">
+            <tbody *ngFor="let user of filteredUsers">
+              <tr>
+                <td>
+                  <div class="media align-items-center" [ngClass]="{ 'inactive': !user.isActive }">
+                    <img [src]="'http://localhost:3000/uploads/' + user.image" class="img-fluid rounded-circle avatar-40" alt="image">
+                    <h5 class="ml-3">{{ user.firstName }} {{ user.lastName }}</h5>
+                  </div>
+                </td>
+                <td [ngClass]="{ 'inactive': !user.isActive }">{{ user.email }}</td>
+                <td [ngClass]="{ 'inactive': !user.isActive }">{{ user.role }}</td>
+                <td [ngClass]="{ 'inactive': !user.isActive }">{{ user.phone }}</td>
+                <td [ngClass]="{ 'inactive': !user.isActive }">
+               
+                    <li *ngFor="let succursale of user.succursales">{{ succursale.name }}</li>
+                
+                </td>
+                <td *ngIf="user.isActive" [ngClass]="{ 'inactive': !user.isActive }">
+                  <span class="badge bg-warning-light">Active</span>
+                </td>
+                <td *ngIf="!user.isActive" [ngClass]="{ 'inactive': !user.isActive }">
+                  <span class="badge bg-danger-light">Inactive</span>
+                </td>
+                <td class="list-unstyled mb-3">
+                  <li class="bg-primary-light rounded-circle iq-card-icon-small" *ngIf="user.isActive" [routerLink]="['/user-update', user.id]"><i class="las la-pen mr-0"></i></li>
+                  <li class="bg-secondary-light rounded-circle iq-card-icon-small" *ngIf="user.isActive" (click)="confirmDelete(user.id)"><i class="las la-trash-alt mr-0"></i></li>
+                  <li [ngClass]="{ 'bg-warning-light': !user.isActive, 'rounded-circle': !user.isActive, 'iq-card-icon-small': !user.isActive, 'mr-4': !user.isActive }" *ngIf="!user.isActive" (click)="reactivateUser(user.id)"><i class="las la-check-circle mr-0"></i></li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+       <!-- Page end  -->
+   </div>
+</div>
+

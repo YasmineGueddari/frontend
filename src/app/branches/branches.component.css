@@ -1,0 +1,7 @@
+.inactive {
+    opacity: 0.2; /* Réduire l'opacité pour indiquer qu'il est désactivé */
+    pointer-events: none; /* Désactiver les événements de souris pour empêcher les clics */
+}
+
+
+

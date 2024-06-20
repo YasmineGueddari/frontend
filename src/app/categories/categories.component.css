@@ -1,0 +1,33 @@
+.table-striped tbody tr .inactive {
+    background-color: #f9f9f9;
+    color: #999;
+  }
+  
+  .list-user-action .btn {
+    margin-right: 5px;
+  }
+  
+  .searchbox {
+    display: flex;
+    align-items: center;
+  }
+  
+  .searchbox input.search-input {
+    border-radius: 5px 0 0 5px;
+    border-right: none;
+  }
+  
+  .searchbox button.search-link {
+    border-radius: 0 5px 5px 0;
+    border-left: none;
+  }
+  
+  .iq-search-bar {
+    display: flex;
+    align-items: center;
+  }
+  
+  .pl-4 {
+    padding-left: 1.5rem;
+  }
+  

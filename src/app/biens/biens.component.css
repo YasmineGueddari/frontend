@@ -1,0 +1,65 @@
+.bien-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #f0f0f3, #ffffff);
+    box-shadow: 4px 4px 10px #cbcbcb, -4px -4px 10px #ffffff;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 400px; /* Adjust this value to your needs */
+    max-height: 400px; /* Adjust this value to your needs */
+}
+
+.bien-card:hover {
+    transform: scale(1.05);
+    box-shadow: 8px 8px 15px #cbcbcb, -8px -8px 15px #ffffff;
+}
+
+.bien-card .card-body {
+    padding: 25px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bien-card .card-title {
+    margin-top: 20px;
+    font-size: 1.5rem;
+}
+
+.bien-card .card-text {
+    font-size: 1rem;
+    color: #6c757d;
+    flex-grow: 1;
+}
+
+.bien-card img {
+    transition: transform 0.3s, border 0.3s;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.bien-card:hover img {
+    transform: scale(1.1);
+    border-color: #17a2b8;
+}
+
+.btn-outline-info {
+    color: #17a2b8;
+    border-color: #17a2b8;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.btn-outline-info:hover {
+    background-color: #17a2b8;
+    color: #ffffff;
+    border-color: #17a2b8;
+}
+
+
