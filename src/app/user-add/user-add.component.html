@@ -18,18 +18,33 @@
                 </div>
   
                 <div class="form-group">
-                    <div class="crm-profile-img-edit position-relative">
-                      <img class="crm-profile-pic rounded avatar-100"
-                           [src]="selectedImage || '../assets/images/user/1.jpg'"
-                           alt="profile-pic"
-                           (error)="setDefaultImage($event)">
-                      <div class="crm-p-image bg-primary">
-                        <i class="las la-pen upload-button">
-                          <input (change)="selectImage($event)" class="custom-file-input" type="file" formControlName="image">
-                        </i>
-                      </div>
+                  <div class="crm-profile-img-edit position-relative">
+                    <img
+                      class="crm-profile-pic rounded avatar-100"
+                      [src]="selectedImage || '../assets/images/user/1.jpg'"
+                      alt="profile-pic"
+                      (error)="setDefaultImage($event)"
+                    />
+                    <div class="crm-p-image bg-primary">
+                      <input
+                        (change)="selectImage($event)"
+                        class="custom-file-input"
+                        type="file"
+                        formControlName="image"
+                      />
+                      <i
+                        class="las la-pen upload-button"
+                        style="
+                          margin-top: 5px;
+                          position: absolute;
+                          margin-left: -22px;
+                          cursor: pointer;
+                        "
+                      >
+                      </i>
                     </div>
                   </div>
+                </div>
   
                 <div class="row">
                   <div class="form-group col-md-6">
@@ -38,7 +53,7 @@
                       <option value="">Select</option>
                       <option value="User">User</option>
                       <option value="Admin">Admin</option>
-                      <option value="SuperAdmin">SuperAdmin</option>
+                      <option *ngIf="isSuperAdmin()"  value="SuperAdmin">SuperAdmin</option>
                     </select>
                     <div *ngIf="submitted && f['role'].errors" class="invalid-feedback">
                       <div *ngIf="f['role'].errors['required']">User Role is required</div>
@@ -176,23 +191,12 @@
                   </div>
                 </div>
   
-                <div class="form-group form-check">
-                  <input
-                    type="checkbox"
-                    formControlName="acceptTerms"
-                    class="form-check-input"
-                    [ngClass]="{ 'is-invalid': submitted && f['acceptTerms'].errors }"
-                  />
-                  <label for="acceptTerms" class="form-check-label">I have read and agree to the Terms</label>
-                  <div *ngIf="submitted && f['acceptTerms'].errors" class="invalid-feedback">
-                    Accept Terms is required
-                  </div>
-                </div>
+         
   
                 <div class="form-group">
                   <button type="submit" class="btn btn-primary">Register</button>
-                  <button type="button" (click)="onReset()" class="btn btn-warning float-right">Reset</button>
-                </div>
+                  <button type="button" (click)="onBack()" class="btn btn-warning float-right">Back</button>
+              </div>              
               </form>
             </div>
           </div>

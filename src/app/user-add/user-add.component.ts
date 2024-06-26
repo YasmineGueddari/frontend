@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../shared.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-user-add',
@@ -23,8 +24,10 @@ export class UserAddComponent implements OnInit {
   errorMessage: string | null = null;
 
   isLoadingBranches = false;
+  currentUserRole: string = '';
+ 
 
-  constructor(private formBuilder: FormBuilder, private sharedService: SharedService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private sharedService: SharedService, private router: Router,  private authService: AuthService) {
     this.form = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
@@ -35,7 +38,7 @@ export class UserAddComponent implements OnInit {
       image: [''],
       role: ['', Validators.required],
       idSuccursales: [[], Validators.required],
-      acceptTerms: [false, Validators.requiredTrue]
+ 
     }, {
       validators: this.passwordMatchValidator
     });
@@ -45,6 +48,11 @@ export class UserAddComponent implements OnInit {
     this.loadBranches();
     this.form.get('role')?.valueChanges.subscribe((value) => {
       this.handleRoleChange(value);
+    });
+
+    
+    this.authService.getUserRole().subscribe(role => {
+      this.currentUserRole = role;
     });
   }
 
@@ -89,6 +97,19 @@ export class UserAddComponent implements OnInit {
         this.isLoadingBranches = false;
       }
     );
+  }
+
+  isUser(): boolean {
+    return this.authService.isUser();
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  isSuperAdmin(): boolean {
+    return this.authService.isSuperAdmin();
+   
   }
 
   get f() { return this.form.controls; }
@@ -164,4 +185,9 @@ export class UserAddComponent implements OnInit {
     setDefaultImage(event: any) {
     event.target.src = '../assets/images/user/1.jpg';
   }
+
+  onBack() {
+    window.history.back(); 
+}
+
 }

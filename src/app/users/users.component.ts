@@ -16,6 +16,9 @@ export class UsersComponent implements OnInit {
   currentUserId: string | null = '';
   currentUserSuccursales: number[] = [];
 
+  currentPageUsers: number = 1;
+  itemsPerPage = 8; 
+
   constructor(private sharedService: SharedService, private authService: AuthService) { }
 
   ngOnInit(): void {

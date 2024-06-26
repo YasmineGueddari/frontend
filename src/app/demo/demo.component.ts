@@ -1,9 +1,12 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef } from '@angular/core';
-import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
+import { CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
+import { startOfDay, endOfDay, isSameDay, isSameMonth } from 'date-fns';
+import { SharedService } from '../shared.service';
 import { EventColor } from 'calendar-utils';
+import { CustomCalendarEvent } from './custom-calendar-event'; // Import the custom interface
+import { AuthService } from '../services/auth.service';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -18,6 +21,14 @@ const colors: Record<string, EventColor> = {
     primary: '#e3bc08',
     secondary: '#FDF1BA',
   },
+  green: {
+    primary: '#34c759',
+    secondary: '#D3EFD1',
+  },
+  purple: {
+    primary: '#8e44ad',
+    secondary: '#EBDEF0',
+  }
 };
 
 @Component({
@@ -26,8 +37,13 @@ const colors: Record<string, EventColor> = {
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.css']
 })
-export class DemoComponent {
+export class DemoComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
+
+  selectedReservationId: string | number | undefined | null = null;
+
+  currentUserRole: string = '';
+  userId: string | null = null;
 
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
@@ -35,21 +51,21 @@ export class DemoComponent {
 
   modalData: {
     action: string;
-    event: CalendarEvent;
-  } = { action: '', event: {} as CalendarEvent };
+    event: CustomCalendarEvent;
+  } = { action: '', event: {} as CustomCalendarEvent };
 
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
       a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event }: { event: CustomCalendarEvent }): void => {
         this.handleEvent('Edited', event);
       },
     },
     {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event }: { event: CustomCalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
         this.handleEvent('Deleted', event);
       },
@@ -57,53 +73,55 @@ export class DemoComponent {
   ];
 
   refresh = new Subject<void>();
-
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'Office chair',
-      color: colors['red'],
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'Spacious meeting room',
-      color: colors['yellow'],
-      actions: this.actions,
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'ASUS I5 4TH GEN',
-      color: colors['blue'],
-      allDay: true,
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'Intelligent motion sensor',
-      color: colors['yellow'],
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-  ];
-
+  events: CustomCalendarEvent[] = []; // Use the custom interface
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) {}
+  constructor(private modal: NgbModal, private sharedService: SharedService, private authService: AuthService) {}
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  ngOnInit(): void {
+    this.userId = localStorage.getItem('id'); 
+    console.log('userId', this.userId);
+
+    this.authService.getUserRole().subscribe(role => {
+      this.currentUserRole = role;
+      this.loadReservations();
+    });
+  }
+
+  getRandomColor(): EventColor {
+    const colorKeys = Object.keys(colors);
+    const randomIndex = Math.floor(Math.random() * colorKeys.length);
+    return colors[colorKeys[randomIndex]];
+  }
+
+  loadReservations(): void {
+    this.sharedService.getAllReservations().subscribe((reservations: any[]) => {
+      console.log(reservations);
+      if (this.currentUserRole === 'User') {
+        reservations = reservations.filter(reservation => reservation.statut === 'confirmed' && reservation.user.id === Number(this.userId));
+        console.log (' mes reservations',reservations);
+      }
+      this.events = reservations
+        .filter(reservation => reservation.statut === 'confirmed')
+        .map(reservation => ({
+          username: `${reservation.user?.firstName || ''} ${reservation.user?.lastName || ''}`.trim() || 'Unknown', // Add username here
+          title: reservation.bien?.name || 'No Name',
+          start: new Date(reservation.date_debut),
+          end: new Date(reservation.date_fin),
+          color: this.getRandomColor(),  // Attribution d'une couleur aléatoire
+          actions: this.actions,
+          allDay: reservation.allDay,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+        }));
+      this.refresh.next();
+    });
+  }
+
+  dayClicked({ date, events }: { date: Date; events: CustomCalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -117,11 +135,7 @@ export class DemoComponent {
     }
   }
 
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd,
-  }: CalendarEventTimesChangedEvent): void {
+  eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
         return {
@@ -135,7 +149,7 @@ export class DemoComponent {
     this.handleEvent('Dropped or resized', event);
   }
 
-  handleEvent(action: string, event: CalendarEvent): void {
+  handleEvent(action: string, event: CustomCalendarEvent): void {
     this.modalData = { event, action };
     this.modal.open(this.modalContent, { size: 'lg' });
   }
@@ -147,7 +161,7 @@ export class DemoComponent {
         title: 'New event',
         start: startOfDay(new Date()),
         end: endOfDay(new Date()),
-        //color: colors.red,
+        color: colors['red'],
         draggable: true,
         resizable: {
           beforeStart: true,
@@ -157,7 +171,7 @@ export class DemoComponent {
     ];
   }
 
-  deleteEvent(eventToDelete: CalendarEvent) {
+  deleteEvent(eventToDelete: CustomCalendarEvent) {
     this.events = this.events.filter((event) => event !== eventToDelete);
   }
 
@@ -174,5 +188,22 @@ export class DemoComponent {
     if (table) {
       table.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  }
+
+  selectReservation(reservationId: string | number | undefined): void {
+    this.selectedReservationId = reservationId;
+    console.log('selectedReservationId', this.selectedReservationId);
+  }
+
+  isUser(): boolean {
+    return this.authService.isUser();
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  isSuperAdmin(): boolean {
+    return this.authService.isSuperAdmin();
   }
 }

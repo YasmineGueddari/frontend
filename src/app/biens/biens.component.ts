@@ -28,6 +28,8 @@ export class BiensComponent implements OnInit {
   filteredBiens: any[] = [];
   filteredSouscategories: any[] = [];
 
+  currentPage: number = 1;
+  itemsPerPage = 6;
   constructor(public _shared: SharedService, private authService: AuthService) { }
 
   ngOnInit(): void {

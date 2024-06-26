@@ -56,7 +56,7 @@
                                            </svg> 
                                        </div>
                                    </div>
-                </div> 
+                                </div> 
 
                                <div class="pl-3 border-left btn-new">
                                 <a routerLink="/user-add" class="btn btn-primary">New User</a>
@@ -72,50 +72,33 @@
 
        
        
-       <div id="grid" class="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
-        <div class="row">
-          <div class="col-lg-4 col-md-6" *ngFor="let user of filteredUsers">
-            <div class="card-transparent card-block card-stretch card-height">
-              <div class="card-body text-center p-0">
-                <div class="item">
-                  <div class="odr-img" >
-                    <!-- Utilisez l'URL correcte pour récupérer l'image -->
-                    <img [src]="'http://localhost:3000/uploads/' + user.image"
-                         class="img-fluid rounded-circle avatar-90 m-auto"
-                         alt="image"
-                         (error)="setDefaultImage($event)">
-                  </div>
-                  <div class="odr-content rounded">
-                    <h4 class="mb-2">{{ user.firstName }} {{ user.lastName }}</h4>
-                    <p class="mb-3" >{{ user.email }}</p>
-                 
-
-                    <!--<u-- class="list-unstyled mb-2">
-                      <li class="bg-primary-light rounded-circle iq-card-icon-small mr-4" *ngIf="user.isActive" 
-                       
-                          [routerLink]="['/user-update', user.id]">
-                        <i class="las la-pen mr-0"></i>
-                      </li>
-                      <li class="bg-secondary-light rounded-circle iq-card-icon-small mr-4" *ngIf="user.isActive" 
-                     
-                         
-                          (click)="confirmDelete(user.id)">
-                        <i class="las la-trash-alt mr-0"></i>
-                      </li>
-                      <li [ngClass]="{ 'bg-warning-light': !user.isActive, 'rounded-circle': !user.isActive, 'iq-card-icon-small': !user.isActive, 'mr-4': !user.isActive }" *ngIf="!user.isActive" (click)="reactivateUser(user.id)"><i class="las la-check-circle mr-0"></i></li>
-                    </u-->
-
-                    <div class="pt-3 border-top">
-                      <a href="mailto:{{ user.email }}"  class="btn btn-primary">Message</a>
-                  
-                    </div>
-                  </div>
-                </div>
+     <div id="grid" class="item-content animate__animated animate__fadeIn active" data-toggle-extra="tab-content">
+  <div class="row">
+    <div class="col-lg-4 col-md-6" *ngFor="let user of filteredUsers ">
+      <div class="card-transparent card-block card-stretch card-height">
+        <div class="card-body text-center p-0">
+          <div class="item">
+            <div class="odr-img">
+              <img [src]="'http://localhost:3000/uploads/' + user.image"
+                   class="img-fluid rounded-circle avatar-90 m-auto"
+                   alt="image"
+                   (error)="setDefaultImage($event)">
+            </div>
+            <div class="odr-content rounded">
+              <h4 class="mb-2">{{ user.firstName }} {{ user.lastName }}</h4>
+              <p class="mb-3">{{ user.email }}</p>
+              <div class="pt-3 border-top">
+                <a href="mailto:{{ user.email }}" class="btn btn-primary">Message</a>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+</div>
+
       
     
     

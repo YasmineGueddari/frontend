@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../shared.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-user-update',
@@ -20,12 +21,15 @@ export class UserUpdateComponent implements OnInit {
   successMessage: string | null = null;
   errorMessage: string | null = null;
   isLoadingBranches = false;
+  currentUserRole: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
+
   ) {
     this.form = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
@@ -37,7 +41,7 @@ export class UserUpdateComponent implements OnInit {
       image: [''],
       role: ['', Validators.required],
       idSuccursales: ['', Validators.required],
-      acceptTerms: [false, Validators.requiredTrue]
+    
     }, {
       validators: this.passwordMatchValidator
     });
@@ -54,7 +58,27 @@ export class UserUpdateComponent implements OnInit {
       this.handleRoleChange(value);
     });
 
+
+
     this.loadBranches();
+
+    this.authService.getUserRole().subscribe(role => {
+      this.currentUserRole = role;
+    });
+  }
+
+  
+  isUser(): boolean {
+    return this.authService.isUser();
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  isSuperAdmin(): boolean {
+    return this.authService.isSuperAdmin();
+   
   }
 
   loadBranches(): void {
@@ -194,4 +218,10 @@ export class UserUpdateComponent implements OnInit {
   setDefaultImage(event: any) {
     event.target.src = '../assets/images/user/1.jpg';
   }
+
+  onBack() {
+    window.history.back(); 
+}
+
+
 }

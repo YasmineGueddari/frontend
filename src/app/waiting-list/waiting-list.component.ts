@@ -14,8 +14,10 @@ export class WaitingListComponent implements OnInit {
   reclamations: any[] = [];
   filteredReservations: any[] = [];
   filteredReclamations: any[] = [];
-  currentPage: number = 1;
-  pageSize: number = 10;
+
+  currentPageReservations: number = 1;
+  currentPageReclamations: number = 1;
+  itemsPerPage = 2;
 
   selectedReservation: any = null;
   selectedReservationId: any = null;
@@ -48,7 +50,7 @@ export class WaitingListComponent implements OnInit {
         this.reservations = res.filter((reservation: any) => reservation.isActive);
         if (this.userRole === 'SuperAdmin' || this.userRole === 'Admin') {
           this.filteredReservations = this.reservations;
-        } 
+        }
       },
       err => {
         console.error(err);
@@ -62,7 +64,7 @@ export class WaitingListComponent implements OnInit {
         this.reclamations = res.filter((reclamation: any) => reclamation.isActive);
         if (this.userRole === 'SuperAdmin' || this.userRole === 'Admin') {
           this.filteredReclamations = this.reclamations;
-        } 
+        }
       },
       err => {
         console.error(err);

@@ -36,6 +36,7 @@ export class AuthSignInComponent implements OnInit {
     // Appel du service pour se connecter
     this.sharedService.signIn(this.form.value).subscribe(
       response => {
+        
         console.log('User login successfully:', response);
         this.submitted = false;
         this.router.navigate(['/list-branch']);

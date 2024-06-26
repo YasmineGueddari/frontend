@@ -27,6 +27,7 @@ export class AuthService {
   }
 
 
+ 
   private getLocalStorageItem(key: string): string | null {
     if (typeof localStorage !== 'undefined' && this.isLocalStorageAvailable()) {
       return localStorage.getItem(key);

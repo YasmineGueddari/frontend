@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
+import { CalendarEvent } from 'angular-calendar';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class SharedService {
 
   private url = 'http://127.0.0.1:3000/';
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,private authService :AuthService) { }
 
   // Méthode privée pour obtenir les en-têtes avec le token
   private getHeaders(): HttpHeaders {
@@ -42,6 +44,7 @@ export class SharedService {
           localStorage.setItem('image', response.image);
           localStorage.setItem('idSuccursales', response.idSuccursales);
           localStorage.setItem('role', response.role);
+         this.authService.setUserRole( response.role)
         }
       })
     );
@@ -308,6 +311,10 @@ export class SharedService {
     return this.http.get(this.url + 'reservations', { headers: this.getHeaders() });
   }
 
+  getReservations(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/reservations`, { headers: this.getHeaders() });
+  }
+  
   // Méthode pour obtenir une réservation par son ID
   getReservationById(id: string): Observable<any> {
     return this.http.get(`${this.url}reservations/${id}`, { headers: this.getHeaders() });

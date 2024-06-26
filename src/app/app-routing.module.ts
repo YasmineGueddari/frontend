@@ -36,7 +36,6 @@ import { DemoComponent } from './demo/demo.component';
 import { WaitingListComponent } from './waiting-list/waiting-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/auth-sign-in', pathMatch: 'full' },
   { path: 'auth-sign-in', component: AuthSignInComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'set-new-password', component: SetNewPasswordComponent },
@@ -70,6 +69,7 @@ const routes: Routes = [
   {path: 'demo' , component: DemoComponent, canActivate: [AuthGuard]},
   {path: 'waiting-list' , component: WaitingListComponent, canActivate: [AuthGuard]},
   { path: '404', component: NotfoundComponent },
+  { path: '', redirectTo: '/auth-sign-in', pathMatch: 'full' },
   { path: '**', redirectTo: '/404' }
 ];
 

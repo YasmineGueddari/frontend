@@ -79,4 +79,17 @@ export class HistoryComponent implements OnInit {
       }
     );
   }
+
+  isUser(): boolean {
+    return this.authService.isUser();
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  isSuperAdmin(): boolean {
+    return this.authService.isSuperAdmin();
+   
+  }
 }

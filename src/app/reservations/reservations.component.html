@@ -29,7 +29,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let reservation of filteredReservations | paginate: pageSize: currentPage" [ngClass]="{ 'table-active': !reservation.isActive }">
+                  <tr *ngFor="let reservation of filteredReservations " [ngClass]="{ 'table-active': !reservation.isActive }">
                     <td>
                       <div class="media align-items-center">
                         <img class="rounded img-fluid avatar-40" [src]="reservation.bien ? 'http://localhost:3000/uploads/' + reservation.bien.image : 'placeholder.jpg'" alt="profile">

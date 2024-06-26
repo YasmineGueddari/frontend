@@ -1,32 +1,28 @@
-# Utiliser l'image officielle Node.js comme image de base
-FROM node:14 AS build
+### STAGE 1: Build ###
+FROM node:19.5.0-alpine AS build
 
-# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers package.json et package-lock.json
 COPY package*.json ./
 
-# Mettre à jour npm à une version compatible avec Node.js v14
-RUN npm install -g npm@6
+RUN npm ci
 
-# Installer les dépendances
-RUN npm install
+RUN npm install -g @angular/cli
 
-# Copier tout le code source
 COPY . .
 
-# Construire l'application Angular
-RUN npm run build --prod
+RUN npx ngcc --properties es2023 browser module main --first-only --create-ivy-entry-points
 
-# Étape 2 : Serveur NGINX
+RUN npm run build
+
 FROM nginx:alpine
 
-# Copier les fichiers de build Angular vers le répertoire de NGINX
-COPY --from=build /app/dist/[NOM_DU_PROJET] /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.d/default.conf
 
-# Exposer le port 80
+COPY --from=build /app/dist/admin/browser /usr/share/nginx/html
+
 EXPOSE 80
 
-# Lancer NGINX
-CMD ["nginx", "-g", "daemon off;"]
+# Docker commands
+# docker build -t Frontend .
+# docker run -d -p 4200:80 Frontend

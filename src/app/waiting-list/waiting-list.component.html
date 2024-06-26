@@ -19,10 +19,11 @@
                     <th style="min-width: 150px">For User</th>
                     <th>Created At</th>
                     <th style="min-width: 150px">State</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let reservation of filteredReservations ">
+                  <tr *ngFor="let reservation of filteredReservations | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPageReservations }">
                     <td>
                       <div class="media align-items-center">
                         <img class="rounded img-fluid avatar-40" [src]="reservation.bien ? 'http://localhost:3000/uploads/' + reservation.bien.image : 'placeholder.jpg'" alt="profile">
@@ -34,20 +35,23 @@
                     <td>{{ reservation.user?.firstName || 'N/A' }} {{ reservation.user?.lastName || 'N/A' }}</td>
                     <td>{{ reservation.createdAt | date: 'short' }}</td>
                     <td>
-                      <button *ngIf="reservation.statut === 'confirmed'" class="btn btn-success btn-sm">Reserved</button>
-                      <button *ngIf="reservation.statut === 'pending'" class="btn btn-secondary btn-sm" data-target="#update-reservation-modal" data-toggle="modal" (click)="selectReservation(reservation.id)" title="Edit">
-                        <i class="las la-pen mr-0"></i> On Hold
-                      </button>
+                      <span *ngIf="reservation.statut === 'confirmed'" class="badge bg-success-light">Reserved</span>
+                      <span *ngIf="reservation.statut === 'pending'" class="badge bg-secondary-light" title="Edit">On Hold</span>
+                      <span *ngIf="reservation.statut === 'cancelled'" class="badge bg-danger-light">Cancelled</span>
+                    </td>
+                    <td>
+                      <a *ngIf="reservation.statut === 'pending'" class="bg-primary-light rounded-circle iq-card-icon-small" data-target="#update-reservation-modal" data-toggle="modal" (click)="selectReservation(reservation.id)" title="Edit">
+                        <i class="las la-pen mr-0"></i>
+                      </a>
                       <a *ngIf="selectedReservationId === reservation.id">
                         <app-reservation-update [reservationId]="selectedReservationId"></app-reservation-update>
                       </a>
-                      <button *ngIf="reservation.statut === 'cancelled'" class="btn btn-danger btn-sm">Cancelled</button>
                     </td>
                   </tr>
                 </tbody>
               </table>
+              <pagination-controls (pageChange)="currentPageReservations = $event"></pagination-controls>
             </div>
-        
           </div>
           <div class="card-body">
             <h5>Claims</h5>
@@ -62,6 +66,7 @@
                     <th style="min-width: 150px">For User</th>
                     <th>Created At</th>
                     <th style="min-width: 130px">State</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -77,20 +82,26 @@
                     <td>{{ reclamation.user?.firstName || 'N/A' }} {{ reclamation.user?.lastName || 'N/A' }}</td>
                     <td>{{ reclamation.createdAt | date: 'short' }}</td>
                     <td>
-                      <button *ngIf="reclamation.statut === 'confirmed'" class="btn btn-success btn-sm">Accepted</button>
-                      <button *ngIf="reclamation.statut === 'pending'" class="btn btn-secondary btn-sm" data-target="#update-reclamation-modal" data-toggle="modal" (click)="selectReclamation(reclamation.id)" title="Edit">
-                        <i class="las la-pen mr-0"></i> On Hold
-                      </button>
+                      <span *ngIf="reclamation.statut === 'confirmed'" class="badge bg-success-light">Accepted</span>
+                      <span *ngIf="reclamation.statut === 'pending'" class="badge bg-secondary-light" title="Edit">On Hold</span>
+                      <span *ngIf="reclamation.statut === 'cancelled'" class="badge bg-danger-light">Cancelled</span>
+                    </td>
+                    <td>
+                      <a *ngIf="reclamation.statut === 'pending'"  class="bg-primary-light rounded-circle iq-card-icon-small" data-target="#update-reclamation-modal" data-toggle="modal" (click)="selectReclamation(reclamation.id)" title="Edit">
+                        <i class="las la-pen mr-0"></i>
+                      </a>
+                     
                       <a *ngIf="selectedReclamationId === reclamation.id">
                         <app-reclamation-update [reclamationId]="selectedReclamationId"></app-reclamation-update>
                       </a>
-                      <button *ngIf="reclamation.statut === 'cancelled'" class="btn btn-danger btn-sm">Cancelled</button>
+
+                      
                     </td>
                   </tr>
                 </tbody>
               </table>
+           
             </div>
-  
           </div>
         </div>
       </div>

@@ -34,13 +34,10 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "styles": [ "node_modules/angular-calendar/css/angular-calendar.css",
+            "src/styles.css"],
+            "scripts": []
+          
           },
           "configurations": {
             "production": {
@@ -52,8 +49,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "15kb",
+                  "maximumError": "15kb"
                 }
               ],
               "outputHashing": "all"
@@ -98,6 +95,7 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.css"
             ],
             "scripts": [
