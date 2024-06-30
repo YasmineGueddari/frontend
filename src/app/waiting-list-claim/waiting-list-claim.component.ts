@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-waiting-list',
-  templateUrl: './waiting-list.component.html',
-  styleUrls: ['./waiting-list.component.css']
+  selector: 'app-waiting-list-claim',
+  templateUrl: './waiting-list-claim.component.html',
+  styleUrl: './waiting-list-claim.component.css'
 })
-export class WaitingListComponent implements OnInit {
+export class WaitingListClaimComponent implements OnInit {
 
   reservations: any[] = [];
   reclamations: any[] = [];
@@ -17,7 +17,7 @@ export class WaitingListComponent implements OnInit {
 
   currentPageReservations: number = 1;
   currentPageReclamations: number = 1;
-  itemsPerPage = 3;
+  itemsPerPage = 2;
 
   selectedReservation: any = null;
   selectedReservationId: any = null;

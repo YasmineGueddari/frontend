@@ -16,9 +16,9 @@
                     aria-label="Toggle navigation">
                     <i class="ri-menu-3-line"></i>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div  class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-list align-items-center">
-                        <li class="nav-item nav-icon nav-item-icon dropdown">
+                        <li *ngIf="currentUserRole === 'User'"  class="nav-item nav-icon nav-item-icon dropdown">
                             <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -29,7 +29,7 @@
                                 </svg>
                                 <span class="bg-primary "></span>
                             </a>
-                            <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div  class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <div class="card shadow-none m-0">
                                     <div class="card-body p-0">
                                         <div class="cust-title p-3">
@@ -38,8 +38,9 @@
                                                 <a class="badge badge-primary badge-card" href="#">2</a>
                                             </div>
                                         </div>
-                                        <div class="px-3 pt-0 pb-0 sub-card">
-                                            <a href="#" class="iq-sub-card">
+                                        <div  class="px-3 pt-0 pb-0 sub-card">
+
+                                            <a  href="#" class="iq-sub-card">
                                                 <div class="media align-items-center cust-card py-3 border-bottom">
                                                     <div class="">
                                                         <img class="avatar-50 rounded-small"
@@ -58,7 +59,8 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                            <a href="#" class="iq-sub-card">
+
+                                            <a   href="#" class="iq-sub-card">
                                                 <div class="media align-items-center cust-card py-3 border-bottom">
                                                     <div class="">
                                                         <img class="avatar-50 rounded-small"
@@ -78,6 +80,8 @@
                                                     </div>
                                                 </div>
                                             </a>
+
+
                                         </div>
                                         <a class="right-ic btn btn-primary btn-block position-relative p-2" routerLink="/reservations" role="button">
                                             View All

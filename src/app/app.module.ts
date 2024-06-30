@@ -53,6 +53,7 @@ import { ReservationpardateComponent } from './reservationpardate/reservationpar
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DemoComponent } from './demo/demo.component';
 import { WaitingListComponent } from './waiting-list/waiting-list.component';
+import { WaitingListClaimComponent } from './waiting-list-claim/waiting-list-claim.component';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { WaitingListComponent } from './waiting-list/waiting-list.component';
     ReservationpardateComponent,
     DemoComponent,
     WaitingListComponent,
+    WaitingListClaimComponent,
 
   ],
   imports: [

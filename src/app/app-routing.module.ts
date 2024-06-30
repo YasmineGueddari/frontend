@@ -34,6 +34,7 @@ import { BienDetailComponent } from './bien-detail/bien-detail.component';
 import { ReservationpardateComponent } from './reservationpardate/reservationpardate.component';
 import { DemoComponent } from './demo/demo.component';
 import { WaitingListComponent } from './waiting-list/waiting-list.component';
+import { WaitingListClaimComponent } from './waiting-list-claim/waiting-list-claim.component';
 
 const routes: Routes = [
   { path: 'auth-sign-in', component: AuthSignInComponent },
@@ -67,7 +68,8 @@ const routes: Routes = [
   {path: 'bien-detail' , component: BienDetailComponent, canActivate: [AuthGuard]},
   {path: 'new-reservation' , component: ReservationpardateComponent, canActivate: [AuthGuard]},
   {path: 'demo' , component: DemoComponent, canActivate: [AuthGuard]},
-  {path: 'waiting-list' , component: WaitingListComponent, canActivate: [AuthGuard]},
+  {path: 'waiting-list-reservation' , component: WaitingListComponent, canActivate: [AuthGuard]},
+  {path: 'waiting-list-claim' , component: WaitingListClaimComponent, canActivate: [AuthGuard]},
   { path: '404', component: NotfoundComponent },
   { path: '', redirectTo: '/auth-sign-in', pathMatch: 'full' },
   { path: '**', redirectTo: '/404' }
